@@ -1,29 +1,30 @@
-import React, { useState, useEffect, useMemo, useCallback, useContext, useRef } from 'react';
-import { Result, Tabs, Button } from 'antd';
+import React, { useState, useEffect, useMemo, useCallback, useRef } from 'react';
+import { Result, Tabs } from 'antd';
 import {
   PieChartOutlined,
   PlayCircleOutlined,
   HighlightOutlined,
   DoubleRightOutlined,
   DoubleLeftOutlined,
+  AppstoreOutlined,
 } from '@ant-design/icons';
 import { connect } from 'dva';
 import HeaderComponent from './components/Header';
 import CanvasControl from './components/CanvasControl';
-import SourceBox from './SourceBox';
-import TargetBox from './TargetBox';
+import SourceBox from './TargetBox';
+import TargetBox from './SourceBox';
 import Calibration from 'components/Calibration';
-import DynamicEngine, { componentsType } from 'components/DynamicEngine';
-import FormEditor from 'components/PanelComponents/FormEditor';
+import DynamicEngine, { componentsType } from '@/core/DynamicEngine';
+import { FormRender } from '@/core';
 
-import template from 'components/BasicShop/BasicComponents/template';
-import mediaTpl from 'components/BasicShop/MediaComponents/template';
-import graphTpl from 'components/BasicShop/VisualComponents/template';
+import template from '@/materials/base/template';
+import mediaTpl from '@/materials/media/template';
+import graphTpl from '@/materials/visual/template';
+import shopTpl from '@/materials/shop/template';
 
-import schemaH5 from 'components/BasicShop/schema';
+import schemaH5 from '@/materials/schema';
 import { ActionCreators, StateWithHistory } from 'redux-undo';
-import { dooringContext } from '@/layouts';
-import { throttle } from '@/utils/tool';
+import { throttle, detectMobileBrowser, getBrowserNavigatorMetaInfo } from '@/utils/tool';
 
 import styles from './index.less';
 
@@ -53,7 +54,6 @@ const Container = (props: {
       setRightColla(c);
     };
   }, []);
-  const context = useContext(dooringContext);
   const curPoint = pstate ? pstate.curPoint : {};
 
   // 指定画布的id
@@ -68,6 +68,7 @@ const Container = (props: {
     base: <HighlightOutlined />,
     media: <PlayCircleOutlined />,
     visible: <PieChartOutlined />,
+    shop: <AppstoreOutlined />,
   };
 
   const generateHeader = useMemo(() => {
@@ -91,48 +92,26 @@ const Container = (props: {
   }, []);
 
   const handleFormSave = useMemo(() => {
-    if (context.theme === 'h5') {
-      return (data: any) => {
-        dispatch({
-          type: 'editorModal/modPointData',
-          payload: { ...curPoint, item: { ...curPoint.item, config: data } },
-        });
-      };
-    } else {
-      return (data: any) => {
-        dispatch({
-          type: 'editorPcModal/modPointData',
-          payload: { ...curPoint, item: { ...curPoint.item, config: data } },
-        });
-      };
-    }
-  }, [context.theme, curPoint, dispatch]);
+    return (data: any) => {
+      dispatch({
+        type: 'editorModal/modPointData',
+        payload: { ...curPoint, item: { ...curPoint.item, config: data } },
+      });
+    };
+  }, [curPoint, dispatch]);
 
   const clearData = useCallback(() => {
-    if (context.theme === 'h5') {
-      dispatch({ type: 'editorModal/clearAll' });
-    } else {
-      dispatch({ type: 'editorPcModal/clearAll' });
-    }
-  }, [context.theme, dispatch]);
+    dispatch({ type: 'editorModal/clearAll' });
+  }, [dispatch]);
 
   const handleDel = useMemo(() => {
-    if (context.theme === 'h5') {
-      return (id: any) => {
-        dispatch({
-          type: 'editorModal/delPointData',
-          payload: { id },
-        });
-      };
-    } else {
-      return (id: any) => {
-        dispatch({
-          type: 'editorPcModal/delPointData',
-          payload: { id },
-        });
-      };
-    }
-  }, [context.theme, dispatch]);
+    return (id: any) => {
+      dispatch({
+        type: 'editorModal/delPointData',
+        payload: { id },
+      });
+    };
+  }, [dispatch]);
 
   const redohandler = useMemo(() => {
     return () => {
@@ -154,9 +133,10 @@ const Container = (props: {
   };
 
   useEffect(() => {
-    if (window.innerWidth < 1024) {
+    // note (@livs-ops): 检测当前浏览器是否处于手机模式下
+    if (detectMobileBrowser(getBrowserNavigatorMetaInfo())) {
       props.history.push('/mobileTip');
-    } //待修改
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -177,88 +157,45 @@ const Container = (props: {
     graphTpl.forEach(v => {
       arr.push(v.type);
     });
+    shopTpl.forEach(v => {
+      arr.push(v.type);
+    });
     return arr;
-  }, [graphTpl, mediaTpl, template]);
+  }, [graphTpl, mediaTpl, template, shopTpl]);
 
   const [dragstate, setDragState] = useState({ x: 0, y: 0 });
 
   const ref = useRef<HTMLDivElement>(null);
   const renderRight = useMemo(() => {
-    if (context.theme === 'h5') {
-      return (
-        <div
-          ref={ref}
-          className={styles.attrSetting}
-          style={{
-            transition: 'all ease-in-out 0.5s',
-            transform: rightColla ? 'translate(100%,0)' : 'translate(0,0)',
-          }}
-        >
-          {pointData.length && curPoint ? (
-            <>
-              <div className={styles.tit}>属性设置</div>
-              <FormEditor
-                config={curPoint.item.editableEl}
-                uid={curPoint.id}
-                defaultValue={curPoint.item.config}
-                onSave={handleFormSave}
-                onDel={handleDel}
-                rightPannelRef={ref}
-              />
-            </>
-          ) : (
-            <div style={{ paddingTop: '100px' }}>
-              <Result
-                status="404"
-                title="还没有数据哦"
-                subTitle="赶快拖拽组件来生成你的H5页面吧～"
-              />
-            </div>
-          )}
-        </div>
-      );
-    } else {
-      return (
-        <div
-          className={styles.attrSetting}
-          style={{
-            transition: 'all ease-in-out 0.5s',
-            transform: rightColla ? 'translate(100%,0)' : 'translate(0,0)',
-          }}
-        >
-          {cpointData.length && curPoint ? (
-            <>
-              <div className={styles.tit}>属性设置</div>
-              <FormEditor
-                config={curPoint.item.editableEl}
-                uid={curPoint.id}
-                defaultValue={curPoint.item.config}
-                onSave={handleFormSave}
-                onDel={handleDel}
-                rightPannelRef={ref}
-              />
-            </>
-          ) : (
-            <div style={{ paddingTop: '100px' }}>
-              <Result
-                status="404"
-                title="还没有数据哦"
-                subTitle="赶快拖拽组件来生成你的H5页面吧～"
-              />
-            </div>
-          )}
-        </div>
-      );
-    }
-  }, [
-    context.theme,
-    cpointData.length,
-    curPoint,
-    handleDel,
-    handleFormSave,
-    pointData.length,
-    rightColla,
-  ]);
+    return (
+      <div
+        ref={ref}
+        className={styles.attrSetting}
+        style={{
+          transition: 'all ease-in-out 0.5s',
+          transform: rightColla ? 'translate(100%,0)' : 'translate(0,0)',
+        }}
+      >
+        {pointData.length && curPoint ? (
+          <>
+            <div className={styles.tit}>属性设置</div>
+            <FormRender
+              config={curPoint.item.editableEl}
+              uid={curPoint.id}
+              defaultValue={curPoint.item.config}
+              onSave={handleFormSave}
+              onDel={handleDel}
+              rightPannelRef={ref}
+            />
+          </>
+        ) : (
+          <div style={{ paddingTop: '100px' }}>
+            <Result status="404" title="还没有数据哦" subTitle="赶快拖拽组件来生成你的H5页面吧～" />
+          </div>
+        )}
+      </div>
+    );
+  }, [cpointData.length, curPoint, handleDel, handleFormSave, pointData.length, rightColla]);
 
   const tabRender = useMemo(() => {
     if (collapsed) {
@@ -267,6 +204,7 @@ const Container = (props: {
           <TabPane tab={generateHeader('base', '')} key="1"></TabPane>
           <TabPane tab={generateHeader('media', '')} key="2"></TabPane>
           <TabPane tab={generateHeader('visible', '')} key="3"></TabPane>
+          <TabPane tab={generateHeader('shop', '')} key="4"></TabPane>
         </>
       );
     } else {
@@ -313,10 +251,23 @@ const Container = (props: {
               </TargetBox>
             ))}
           </TabPane>
+          <TabPane tab={generateHeader('shop', '')} key="4">
+            <div className={styles.ctitle}>营销组件</div>
+            {shopTpl.map((value, i) => (
+              <TargetBox item={value} key={i} canvasId={canvasId}>
+                <DynamicEngine
+                  {...value}
+                  config={schemaH5[value.type as keyof typeof schemaH5].config}
+                  componentsType={'shop' as componentsType}
+                  isTpl={true}
+                />
+              </TargetBox>
+            ))}
+          </TabPane>
         </>
       );
     }
-  }, [canvasId, collapsed, generateHeader, graphTpl, mediaTpl, schemaH5, template]);
+  }, [canvasId, collapsed, generateHeader, graphTpl, mediaTpl, schemaH5, template, shopTpl]);
 
   const containerRef = useRef<HTMLDivElement>(null);
   const [diffmove, setDiffMove] = useState({
@@ -480,23 +431,6 @@ const Container = (props: {
           onClick={() => changeRightColla(!rightColla)}
         >
           {!rightColla ? <DoubleRightOutlined /> : <DoubleLeftOutlined />}
-        </div>
-        <div
-          style={{
-            width: rightColla ? 0 : '279px',
-            position: 'absolute',
-            transform: 'translate(0,-10%)',
-            transition: 'all ease-in-out 0.5s',
-            textAlign: 'center',
-            bottom: -5,
-            right: rightColla ? 0 : 16,
-            background: 'hsla(0,0%,88.2%,.7)',
-            padding: rightColla ? 0 : '10px',
-          }}
-        >
-          <Button block type="primary" onClick={() => handleDel(curPoint.id)}>
-            删除
-          </Button>
         </div>
         <div
           style={{

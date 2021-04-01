@@ -1,3 +1,5 @@
+> 让H5制作像搭积木一样简单!
+
 <p align="center">
     <img src="./public/logo.png" width="260" alt="H5编辑器,H5制作神器,H5 editor,lowcode">
 </p>
@@ -8,27 +10,37 @@
     <img alt="Documentation" src="https://img.shields.io/badge/documentation-yes-brightgreen.svg" />
   </a>
   <a href="#" target="_blank">
-    <img alt="License: MIT" src="https://img.shields.io/badge/License-MIT-yellow.svg" />
+    <img alt="license:GPL3.0" src="https://img.shields.io/badge/license-GPL3.0-yellow.svg" />
   </a>
 </p>
 
-> H5-Dooring是一款功能强大，开源免费的H5可视化页面配置解决方案，致力于提供一套简单方便、专业可靠、无限可能的H5落地页最佳实践。技术栈以react为主， 后台采用nodejs开发。
+> H5-Dooring是一款功能强大，专业可靠的H5可视化页面配置解决方案，致力于提供一套简单方便、专业可靠、无限可能的H5落地页最佳实践。技术栈以react为主， 后台采用nodejs开发。
 
 > H5-Dooring is a powerful, open source, free H5 visual page configuration solution dedicated to providing a simple, convenient, professional and reliable, unlimited set of H5 landing page best practices. The technology stack is mainly react, developed in the background using nodejs.
 
-### 🏠 [Homepage](http://49.234.61.19/h5_visible)
+### 🏠 [Homepage](http://h5.dooring.cn)
 
-### ✨ [Demo](http://49.234.61.19/h5_plus/editor?tid=123456)
+### ✨ [Demo](http://h5.dooring.cn/h5_plus)
+
+### 📦 doc(文档) [H5-Dooring Document](http://h5.dooring.cn/doc)
+
+### [视频教程 | Video tutorial](https://www.zhihu.com/zvideo/1326300284608417792)
 
 <!-- <img src="http://io.nainor.com/uploads/face_17512320c6d.png" alt="H5可视化编辑器" /> -->
-![](https://imgkr2.cn-bj.ufileos.com/4262527d-9319-4fee-a62d-5a4faf4c017e.png?UCloudPublicKey=TOKEN_8d8b72be-579a-4e83-bfd0-5f6ce1546f13&Signature=Rh5HqzC5bO7TaWaGMcaEe4dZ0Gw%253D&Expires=1607224422)
+![](http://h5.dooring.cn/uploads/dooring-sdk_1763cbe7028.png)
+
+相关产品: [V6.Dooring | 大屏可视化编辑器](https://github.com/MrXujiang/v6.dooring.public)
 
 ## Author
 
 👤 **徐小夕**
 
-* Website: http://49.234.61.19/h5_visible
+* Website: http://h5.dooring.cn
 * Github: [@MrXujiang](https://github.com/MrXujiang)
+
+## 声明
+
+专有软件及代码，未获得授权的情况下，禁止对该仓库代码进行反编译、分发等行为，否则将承担相应的法律后果。
 
 ## 🤝 Contributing
 
@@ -42,13 +54,13 @@ Give a ⭐️ if this project helped you!
 最近笔者正在开放dooring的插拔式服务, 以js-sdk的形式支持集成到外部系统中, 并提供开放API共使用者自由配置. 规划如下:
 
 
-![](https://imgkr2.cn-bj.ufileos.com/8b1c708d-ef44-4cc1-91c9-0ed2229074b1.png?UCloudPublicKey=TOKEN_8d8b72be-579a-4e83-bfd0-5f6ce1546f13&Signature=CwdTguUoO3XOuN8H9MctW0H8Yis%253D&Expires=1606646985)
+![](http://h5.dooring.cn/uploads/sdk_1763cc11bd5.png)
 
 
-### 1. 如何引用用js-sdk | How to use js-sdk
+### 1. 如何引用js-sdk | How to use js-sdk
 我们可以使用两种方式来使用我们的js-sdk, 第一种是在项目脚本中引入如下script标签, 如下:
 ``` js
-<script src="http://49.234.61.19/dooring-sdk.js"></script>
+<script src="http://h5.dooring.cn/dooring-sdk.js"></script>
 ```
 或者直接复制如下代码到你的script标签中, 代码如下:
 ``` js
@@ -112,9 +124,9 @@ var dooringOpts = {
 预览功能这块比较简单, 我们只需要将用户生成的json数据丢进H5渲染器中即可, 这里我们需要做一个渲染页面单独用来预览组件. 先来看看几个预览效果:
 > The preview function is relatively simple, we just need to throw the user-generated jason data into the H5 renderer, here we need to make a rendering page for the preview components separately. Let's take a look at a few previews:
 
-<img src="./public/h5_preview_ph.png" alt="h5_preview_pic" width="375px"/>
+<img src="http://49.234.61.19/uploads/pr_1_1763cc4184a.png" alt="h5_preview_pic" width="375px"/>
 <br />
-<img src="./public/h5_preview_line.png" alt="h5_preview_pic" width="375px"/>
+<img src="http://49.234.61.19/uploads/pr_2_1763cc49dd1.png" alt="h5_preview_pic" width="375px"/>
 
 前面的渲染器原理已经介绍了, 这里就不一一介绍了,感兴趣的可以交流讨论.
 
@@ -148,27 +160,27 @@ FileSaver.saveAs(blob, "hello world.txt");
 * [基于H5 Dooring场景下的图片 文件上传方案指南](https://github.com/MrXujiang/h5-Dooring/wiki/%E5%9F%BA%E4%BA%8EH5-Dooring%E5%9C%BA%E6%99%AF%E4%B8%8B%E7%9A%84%E5%9B%BE%E7%89%87-%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E6%96%B9%E6%A1%88%E6%8C%87%E5%8D%97)
 
 ## 已完成功能 | The functionality is complete
-1. 组件库拖拽和显示
-2. 组件库动态编辑
-3. H5页面预览功能
-4. 保存H5页面配置文件
-5. 保存为模版
-6. 移动端跨端适配
-7. 媒体组件
-8. 在线下载网站代码功能
-9. 添加typescript支持
-10. 表单设计器/自定义表单组件
-11. 可视化组件Chart实现
-12. 在线编程模块(Mini Web IDE)
-13. 新增图表组件 面积图，折线图， 饼图
-14. 添加图片库,支持用户在线选择图片素材
-15.升级图片组件为图文组件
-16. 添加模版库
-17. 添加可视化组件(基于g2)如折线图, 饼图, 面积图等
-18. form组件文本框字段修改
-19. 清空按钮添加确认框
-20. 表单组件中添加展示型文本,用来对字段说明
-21. 支持组件复制, 右键删除
+1. 组件库拖拽和显示 | Component library drag and display
+2. 组件库动态编辑 | Component library dynamic editing
+3. H5页面预览功能 | H5 page preview feature
+4. 保存H5页面配置文件 | Save the H5 page profile
+5. 保存为模版 | Save as a template
+6. 移动端跨端适配 | Mobile cross-end fit
+7. 媒体组件 | The media component
+8. 在线下载网站代码功能 | Download the website code feature online
+9. 添加typescript支持 | Add typescript support
+10. 表单设计器/自定义表单组件 | Form designer/custom form components
+11. 可视化组件Chart实现 | Visual component Chart implementation
+12. 在线编程模块(Mini Web IDE) | Online programming module
+13. 新增图表组件 面积图，折线图， 饼图 | Added chart component area chart, line chart, pie chart
+14. 添加图片库,支持用户在线选择图片素材 | Add a picture library to allow users to select picture footage online
+15. 升级图片组件为图文组件 | Upgrade the picture component to the picture component
+16. 添加模版库 | Add a template library
+17. 添加可视化组件(基于g2)如折线图, 饼图, 面积图等 | Add visualization components (based on g2) such as line charts, pie charts, area charts, etc
+18. form组件文本框字段修改 | The form component text box field is modified
+19. 清空按钮添加确认框 | Empty the button to add a confirmation box
+20. 表单组件中添加展示型文本,用来对字段说明 | Add presentation text to the form component to describe the field
+21. 支持组件复制, 右键删除 | Support for component replication, right-click deletion
 
 ## 正在完成功能 | The functionality is being completed
 * 丰富组件库组件 Enrich component library components
@@ -219,9 +231,12 @@ cnpm run dev
 前提是先安装http-server模块.
 
 ## Partner project
+* [powerNice - 一款轻量级文档管理编辑器](http://h5.dooring.cn/powernice/views)
+* [rc-drag - 基于react的轻量级拖拽缩放组件](https://github.com/MrXujiang/rc-drag)
 * [Luckysheet - 强大的在线excel编辑器](https://github.com/mengshukeji/Luckysheet)
 * [Blink - 一款自定义的生成故障艺术动画的组件库](https://github.com/MrXujiang/blink)
 * [frontend-developer-roadmap | 一个能提高开发者工作效率的前端js库汇总](https://github.com/MrXujiang/frontend-developer-roadmap)
+* [lucky-canvas 抽奖插件 | 一个支持H5, 微信小程序, React的抽奖插件](https://github.com/LuckDraw/lucky-canvas)
 
 ## 更新日志 | Update the log
 1. 添加在线编程模块（在执行代码前先启动node服务 npm run server）
@@ -236,13 +251,9 @@ cnpm run dev
 ## 赞助 | Sponsored
 开源不易, 有了您的赞助, 我们会做的更好~
 
-<img src="https://imgkr2.cn-bj.ufileos.com/667df51c-39d6-4c43-91fb-9504c823c3df.jpeg?UCloudPublicKey=TOKEN_8d8b72be-579a-4e83-bfd0-5f6ce1546f13&Signature=exkrceoh7vCZA%252BxpAlwWMQfW0gs%253D&Expires=1607224243" width="180px" />
+<img src="http://49.234.61.19/uploads/WechatIMG2_1742b586c3d.jpeg" width="180px" />
 
-## 技术反馈和交流 | Technical feedback and communication
+## 技术反馈和交流群 | Technical feedback and communication
 微信：beautifulFront
 
-<img src="https://imgkr2.cn-bj.ufileos.com/de8231d0-ab67-460e-87c6-ff1f97e2b92f.png?UCloudPublicKey=TOKEN_8d8b72be-579a-4e83-bfd0-5f6ce1546f13&Signature=klJgZjv%252BLNIChP8%252FgFLoQ81FAbM%253D&Expires=1607224243" width="180px" />
-
-## 技术交流群(加作者微信进群) | chat whit author
-
-<img src="https://imgkr2.cn-bj.ufileos.com/d7fc3463-8ca2-43a7-813b-0acd5d87cb9a.jpeg?UCloudPublicKey=TOKEN_8d8b72be-579a-4e83-bfd0-5f6ce1546f13&Signature=aTn%252FFpw8zFHtk1wV5730JcV2nMk%253D&Expires=1607224243" width="180px" />
+<img src="http://49.234.61.19/uploads/code_1763cc23385.png" width="180px" />
